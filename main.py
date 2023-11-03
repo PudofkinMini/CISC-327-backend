@@ -10,6 +10,7 @@ TODO:
 
 from typing import Union
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import logging
 import pyodbc
 import random
@@ -21,21 +22,92 @@ pyodbc.drivers()
 cnxn = pyodbc.connect('Driver={ODBC Driver 18 for SQL Server};Server=tcp:cisc-327-db.database.windows.net,1433;Database=cisc-327-db;Uid=group5;Pwd={Password1};Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;')
 
 # Create a cursor from the connection
-cursor = cnxn.cursor()
+
 
 # Initialize webserver
 app = FastAPI()
 
-@app.get("/")
-def read_root():
-    print('something')
-    print(cursor.execute('select * from accounts').fetchall())
-    return {"Hello": "dude"}
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # You can also specify the exact origins
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+@app.get("/login/{username}/{password}")
+def login(username, password):
+    cursor = cnxn.cursor()
+    query = cursor.execute(f"exec ps_login @username='{username}', @password='{password}'").fetchone()
+    print(query)
+    if query:
+        userid = query.id
+        if userid:
+            return {"userid": f"{userid}"}
+    cursor.close()
+    return {"userid": ""}
 
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/loadMenu/{restaurantid}")
+def load_menu(restaurantid):
+    cursor = cnxn.cursor()
+    query = cursor.execute(f"exec ps_load_menu_items @restaurant_id='{restaurantid}'").fetchall()
+    print(query)
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    cursor.close()
+    return results
+    
+@app.get("/loadRestaurants/{category}")
+def load_restaurants(category):
+    cursor = cnxn.cursor()
+    cat = category
+    if category == 'Fast%20Food':
+        cat = 'Fast Food'
+    print(f"exec ps_load_restaurants @category='{cat}'")
+    query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    cursor.close()
+    return results
+    # return {"restaurants": }
+    
+@app.get("/addToCart/{user_id}/{restaurant_id}/{menu_item_id}")
+def load_restaurants(user_id, restaurant_id, menu_item_id):
+    cursor = cnxn.cursor()
+    query = cursor.execute(f"exec pi_add_menu_item_to_order @account_id={user_id}, @restaurant_id={restaurant_id}, @menu_item_id={menu_item_id}").fetchall()
+    cnxn.commit()
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    print(results)
+    cursor.close()
+    
+    return results
+
+@app.get("/loadCart/{user_id}/{restaurant_id}")
+def load_cart(user_id, restaurant_id):
+    cursor = cnxn.cursor()
+    query = cursor.execute(f"exec ps_load_cart @account_id={user_id}, @restaurant_id={restaurant_id}").fetchall()
+    cnxn.commit()
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    print(results)
+    cursor.close()
+    
+    return results
+
+@app.get("/removeFromCart/{ordered_item_id}")
+def load_cart(ordered_item_id):
+    cursor = cnxn.cursor()
+    cursor.execute(f"exec ps_remove_item_from_cart @ordered_item_id={ordered_item_id}")
+    cnxn.commit()
+    # columns = [column[0] for column in cursor.description]
+    # results = [dict(zip(columns, row)) for row in query]
+    # print(results)
+    cursor.close()
+    
+    return {'status': 'success'}
+    
+    
 
 
 
@@ -118,7 +190,7 @@ def generate_data():
     fast_foods = ['Grilled Chicken Sandwich', 'Fried Chicken Sandwich', 'Hamburger', 'Cheese Burger', 'Bacon Cheese Burger', 'Hot Dog', 'Fries', 'Soda Drink']
     comfort_foods = ['Pizza', 'Chicken Wings (8pc)', 'Chili', 'Ham & Cheese Sandwich', 'Mac & Cheese', 'Grilled Cheese', 'Fries', 'Soda Drink']
     chinese_foods = ['Peking Duck', 'Chow Mein', 'Mapo Tofu', 'Spring Rolls (3pc)', 'Wonton Soup', 'Chicken Fried Rice', 'Rice', 'Soda Drink', 'Tea']
-    indian_foods = ['Coconut Tilapia Curry', 'Samosa (4pc)', 'Butter Chicken', 'Tandoori Chicken', 'LLamb Chops', 'Rice', 'Naan Bread', 'Soda Drink']
+    indian_foods = ['Coconut Tilapia Curry', 'Samosa (4pc)', 'Butter Chicken', 'Tandoori Chicken', 'Lamb Chops', 'Rice', 'Naan Bread', 'Soda Drink']
     italian_foods = ['Spaghetti Carbonara', 'Spaghetti Bolognese', 'Calamari', 'Bruschetta', 'Fettuccine Alfredo', 'Bread & Olive Oil', 'Soda Drink', 'Wine']
     french_foods = ['Escargot', 'Duck Confit', 'Steak Tartare', 'Steak Frites', 'Croissant', 'Foie Gras', 'Soda Drink', 'Wine']
     vegetarian_foods = ['Caesar Salad', 'Ranch Salad', 'Garden Salad', 'Green Goddess', 'Greek Salad', 'Egg Salad', 'Potatoe Salad', 'Fries', 'Soda Drink']
