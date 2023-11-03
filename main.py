@@ -106,6 +106,18 @@ def load_cart(ordered_item_id):
     cursor.close()
     
     return {'status': 'success'}
+
+@app.get("/payAndPlaceOrder/{user_id}/{restaurant_id}/{order_id}")
+def load_cart(user_id, restaurant_id, order_id):
+    cursor = cnxn.cursor()
+    cursor.execute(f"exec pui_pay_and_place_order @account_id={user_id}, @restaurant_id={restaurant_id}, @order_id={order_id}")
+    cnxn.commit()
+    # columns = [column[0] for column in cursor.description]
+    # results = [dict(zip(columns, row)) for row in query]
+    # print(results)
+    cursor.close()
+    
+    return {'status': 'success'}
     
     
 
