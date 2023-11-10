@@ -35,6 +35,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# testable
 @app.get("/login/{username}/{password}")
 def login(username, password):
     cursor = cnxn.cursor()
@@ -47,6 +48,7 @@ def login(username, password):
     cursor.close()
     return {"userid": ""}
 
+#testable
 @app.get("/loadMenu/{restaurantid}")
 def load_menu(restaurantid):
     cursor = cnxn.cursor()
@@ -56,7 +58,8 @@ def load_menu(restaurantid):
     results = [dict(zip(columns, row)) for row in query]
     cursor.close()
     return results
-    
+
+#testable 
 @app.get("/loadRestaurants/{category}")
 def load_restaurants(category):
     cursor = cnxn.cursor()
@@ -70,7 +73,8 @@ def load_restaurants(category):
     cursor.close()
     return results
     # return {"restaurants": }
-    
+
+# testable - unit testing
 @app.get("/addToCart/{user_id}/{restaurant_id}/{menu_item_id}")
 def load_restaurants(user_id, restaurant_id, menu_item_id):
     cursor = cnxn.cursor()
@@ -83,6 +87,7 @@ def load_restaurants(user_id, restaurant_id, menu_item_id):
     
     return results
 
+# NOT testable
 @app.get("/loadCart/{user_id}/{restaurant_id}")
 def load_cart(user_id, restaurant_id):
     cursor = cnxn.cursor()
@@ -95,6 +100,7 @@ def load_cart(user_id, restaurant_id):
     
     return results
 
+# NOT testable
 @app.get("/removeFromCart/{ordered_item_id}")
 def load_cart(ordered_item_id):
     cursor = cnxn.cursor()
@@ -107,6 +113,7 @@ def load_cart(ordered_item_id):
     
     return {'status': 'success'}
 
+# testable
 @app.get("/payAndPlaceOrder/{user_id}/{restaurant_id}/{order_id}")
 def load_cart(user_id, restaurant_id, order_id):
     cursor = cnxn.cursor()
@@ -118,6 +125,9 @@ def load_cart(user_id, restaurant_id, order_id):
     cursor.close()
     
     return {'status': 'success'}
+
+
+
     
     
 
