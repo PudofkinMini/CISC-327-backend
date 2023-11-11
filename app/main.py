@@ -10,6 +10,7 @@ TODO:
 
 from typing import Union
 from fastapi import FastAPI
+from fastapi.testclient import TestClient
 from fastapi.middleware.cors import CORSMiddleware
 import logging
 import pyodbc
@@ -26,6 +27,12 @@ cnxn = pyodbc.connect('Driver={ODBC Driver 18 for SQL Server};Server=tcp:cisc-32
 
 # Initialize webserver
 app = FastAPI()
+
+@app.get('/testSetup')
+def tset():
+    return {"msg": "Hello World"}
+client = TestClient(app)
+
 
 app.add_middleware(
     CORSMiddleware,
