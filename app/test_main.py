@@ -21,31 +21,32 @@ def test_test_setupFailure():
     assert response.json() == {"msg": "Hello world"}
 
 ###################################################################
-#USER REGISTRATION/LOGIN                                          
+#USER REGISTRATION/LOGIN TESTING                                         
 ###################################################################
-def test_login_username(): #log in with existing username as input
+def test_login_username(): #log in with existing username as input (Parameters : username = admin, password = password)
     response = client.get("/login/admin/password")
     assert response.status_code == 200
     assert response.json() == {"userid": "2"} #admin has userid 2
 
-def test_login_email(): #log in with existing email as input of same user --swappable credentials for same user
+def test_login_email(): #log in with existing email as input of same user --swappable credentials for same user (Parameters : username = admin@email.com, password = password)
     response = client.get("/login/admin@email.com/password")
     assert response.status_code == 200
     assert response.json() == {"userid": "2"} #admin has user id 2. Must match
 
-def test_login_username_DNE(): #Test DNE username login (DNE = Does Not Exist)
+def test_login_username_DNE(): #Test DNE username login (DNE = Does Not Exist) (Parameters : username = fakeemail@gmal.com, password = diffPassword)
     response = client.get("/login/fakeemail@gmail.net/diffPassword")
     assert response.status_code == 200
-    assert response.json() == {"userid": ""}
+    assert response.json() == {"userid": ""} #empty, no user exists
 
-def test_login_email_DNE(): #Test DNE email login (DNE = Does Not Exist)
+def test_login_email_DNE(): #Test DNE email login (DNE = Does Not Exist) (Parameters : username = fakeUser, password = diffPassword)
     response = client.get("/login/fakeUser/diffPassword")
     assert response.status_code == 200
-    assert response.json() == {"userid": ""}
+    assert response.json() == {"userid": ""} #empty, no user exists
 
 #####################################################################
-#LoadMenu testing
+#LoadMenu TESTING
 #####################################################################
+
 # Parameters : restaurant_id = 48 (Lonestar)  
 def test_loadMenu1():
     response = client.get("/loadMenu/48")
@@ -66,8 +67,9 @@ def test_loadMenuDNE():
     parseMenu = response.json()
     assert len(parseMenu) == 0 #Should be an empty json body
 
-#####################################################################    
-
+#####################################################################
+# P   placeOrder TESTING
+#####################################################################
 '''
 Parameters : user_id = 2
              restaurant_id = 44
