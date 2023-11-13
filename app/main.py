@@ -43,6 +43,23 @@ app.add_middleware(
 )
 
 # testable
+@app.get("/register/{email}/{username}/{password}")
+def register(email, username, password):
+    if len(password) < 8:
+        return {'success': 'false', 'reason': 'Password must be at least 8 characters long.'}
+    cursor = cnxn.cursor()
+    existing_accounts = cursor.execute(f"select * from accounts where username like '{username}' or email like '{email}'").fetchall()
+    # print(existing_accounts)
+    if len(existing_accounts) > 0:
+        print("acc alr exists")
+        return {'success': 'false', 'reason': 'Account with same username or email already exists'}
+    query = cursor.execute(f"exec pi_create_account @email='{email}', @username='{username}', @password='{password}'")
+    cnxn.commit()
+    print(query)
+    cursor.close()
+    return {'success': 'true'}
+
+# testable
 @app.get("/login/{username}/{password}")
 def login(username, password):
     cursor = cnxn.cursor()
@@ -91,7 +108,6 @@ def load_restaurants(user_id, restaurant_id, menu_item_id):
     results = [dict(zip(columns, row)) for row in query]
     print(results)
     cursor.close()
-    
     return results
 
 # NOT testable
@@ -132,6 +148,27 @@ def load_cart(user_id, restaurant_id, order_id):
     cursor.close()
     
     return {'status': 'success'}
+
+@app.get("/loadOrders/{user_id}")
+def load_orders(user_id):
+    cursor = cnxn.cursor()
+    query = cursor.execute(f"exec ps_loadOrders @account_id={user_id}")
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    print(results)
+    cursor.close()
+    return results
+
+@app.get("/confirmDelivery/{user_id}/{order_id}")
+def load_orders(user_id, order_id):
+    cursor = cnxn.cursor()
+    cursor.execute(f"exec pui_confirm_order_delivery @account_id={user_id} @order_id='{order_id}")
+    cnxn.commit()
+    # columns = [column[0] for column in cursor.description]
+    # results = [dict(zip(columns, row)) for row in query]
+    # print(results)
+    cursor.close()
+    return {'success': 'true'}
 
 
 
