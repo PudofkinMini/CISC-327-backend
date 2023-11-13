@@ -20,8 +20,7 @@ logging.basicConfig(level=logging.INFO)
 pyodbc.drivers()
 
 # Specifying the ODBC driver, server name, database, etc. directly
-cnxn = pyodbc.connect('Driver={ODBC Driver 18 for SQL Server};Server=tcp:cisc-327-db.database.windows.net,1433;Database=cisc-327-db;Uid=group5;Pwd={Password1};Encrypt=yes;TrustServerCertificate=yes;Connection Timeout=30;')
-
+cnxn = pyodbc.connect('Driver={ODBC Driver 18 for SQL Server};Server=tcp:cisc-327-db.database.windows.net,1433;Database=cisc-327-db;Uid=group5;Pwd={Password1};Encrypt=yes;TrustServerCertificate=no;Connection Timeout=30;')
 # Create a cursor from the connection
 
 
