@@ -7,6 +7,9 @@ from .main import app
 
 client = TestClient(app)
 
+####################################################################
+#INITIAL PYTEST TEST RUN
+####################################################################
 def test_test_setupSuccess():
     response = client.get("/testSetup")
     assert response.status_code == 200
@@ -16,6 +19,29 @@ def test_test_setupFailure():
     response = client.get("/testSetup")
     assert response.status_code == 200
     assert response.json() == {"msg": "Hello world"}
+
+###################################################################
+#USER REG./LOGIN
+####################################################################
+def test_login_username(): #log in with existing username as input
+    response = client.get("/login/admin/password")
+    assert response.status_code == 200
+    assert response.json() == {"userid": "2"} #admin has userid 2
+
+def test_login_email(): #log in with existing email as input of same user --swappable credentials for same user
+    response = client.get("/login/admin@email.com/password")
+    assert response.status_code == 200
+    assert response.json() == {"userid": "2"} #admin has user id 2. Must match
+
+def test_login_username_DNE(): #Test DNE username login (DNE = Does Not Exist)
+    response = client.get("/login/fakeemail@gmail.net/diffPassword")
+    assert response.status_code == 200
+    assert response.json() == {"userid": ""}
+
+def test_login_email_DNE(): #Test DNE email login (DNE = Does Not Exist)
+    response = client.get("/login/fakeUser/diffPassword")
+    assert response.status_code == 200
+    assert response.json() == {"userid": ""}
 
 #####################################################################
 
