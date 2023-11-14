@@ -20,23 +20,6 @@ def test_test_setupFailure():
     assert response.status_code == 200
     assert response.json() == {"msg": "Hello world"}
 '''
-###################################################################
-#USER REGISTRATION TESTING                                    
-###################################################################
-def test_registration_clean(): #register with new email, username, and password (Parameters: email = anotherneew@email.com, username = neweUser, password=12345678longPassword)
-    response = client.get("/register/anotherneew@email.com/neweUser/12345678longPassword")
-    assert response.status_code == 200
-    assert response.json() == {'success': 'true'} 
-
-def test_registration_already_exists(): #register with existing username, email, password (Parameters: email = admin@email.com, username = admin, password=12345678longPassword)
-    response = client.get("/register/admin@email.com/admin/12345678longPassword")
-    assert response.status_code == 200
-    assert response.json() == {'success': 'false', 'reason': 'Account with same username or email already exists'} 
-
-def test_registration_too_short(): #register with password less than 8 characters (Parameters: email = anotherneew@email.com, username = neweUser, password=3)
-    response = client.get("/register/anotherneew@email.com/neweUser/3")
-    assert response.status_code == 200
-    assert response.json() == {'success': 'false', 'reason': 'Password must be at least 8 characters long.'} 
 
 ###################################################################
 #USER LOGIN TESTING                                         
@@ -141,57 +124,66 @@ def test_loadRestaurantsComfort():
     assert comfort_rest_list == response.json()
 
 def test_loadRestaurantsIndian():
-    response = client.get("/loadRestaurants/Comfort")
-    comfort_indian_list = [{'id': 47, 'name': 'Pizza Hut', 'category': 'Comfort', 'price': '$', 'logo': None, 'created': '2023-11-01T18:59:48.090000', 'updated': '2023-11-01T18:59:48.090000', 'deleted': None}, {'id': 48, 'name': 'Lonestar', 'category': 'Comfort', 'price': '$$', 'logo': None, 'created': '2023-11-01T18:59:48.220000', 'updated': '2023-11-01T18:59:48.220000', 'deleted': None}, {'id': 49, 'name': 'Osmows', 'category': 'Comfort', 'price': '$$$', 'logo': None, 'created': '2023-11-01T18:59:48.360000', 'updated': '2023-11-01T18:59:48.360000', 'deleted': None}]
+    response = client.get("/loadRestaurants/Indian")
+    indian_rest_list = [{'id': 53, 'name': 'Tasty Indian Bar & Grill', 'category': 'Indian', 'price': '$', 'logo': None, 'created': '2023-11-01T18:59:48.910000', 'updated': '2023-11-01T18:59:48.910000', 'deleted': None}, {'id': 54, 'name': 'Namaste Kingston', 'category': 'Indian', 'price': '$$', 'logo': None, 'created': '2023-11-01T18:59:49.040000', 'updated': '2023-11-01T18:59:49.040000', 'deleted': None}, {'id': 55, 'name': 'Flavours of India', 'category': 'Indian', 'price': '$$$', 'logo': None, 'created': '2023-11-01T18:59:49.173000', 'updated': '2023-11-01T18:59:49.173000', 'deleted': None}]
     assert response.status_code == 200
-    assert comfort_rest_list == response.json()
+    assert indian_rest_list == response.json()
     
     
-def test_loadRestaurantsComfort():
-    response = client.get("/loadRestaurants/Comfort")
-    comfort_rest_list = [{'id': 47, 'name': 'Pizza Hut', 'category': 'Comfort', 'price': '$', 'logo': None, 'created': '2023-11-01T18:59:48.090000', 'updated': '2023-11-01T18:59:48.090000', 'deleted': None}, {'id': 48, 'name': 'Lonestar', 'category': 'Comfort', 'price': '$$', 'logo': None, 'created': '2023-11-01T18:59:48.220000', 'updated': '2023-11-01T18:59:48.220000', 'deleted': None}, {'id': 49, 'name': 'Osmows', 'category': 'Comfort', 'price': '$$$', 'logo': None, 'created': '2023-11-01T18:59:48.360000', 'updated': '2023-11-01T18:59:48.360000', 'deleted': None}]
+def test_loadRestaurantsFrench():
+    response = client.get("/loadRestaurants/French")
+    french_rest_list = [{'id': 59, 'name': 'Geneva Crêpe Bistro', 'category': 'French', 'price': '$', 'logo': None, 'created': '2023-11-01T18:59:49.733000', 'updated': '2023-11-01T18:59:49.733000', 'deleted': None}, {'id': 60, 'name': 'Chez Piggy', 'category': 'French', 'price': '$$', 'logo': None, 'created': '2023-11-01T18:59:49.863000', 'updated': '2023-11-01T18:59:49.863000', 'deleted': None}, {'id': 61, 'name': 'Bistro Stefan', 'category': 'French', 'price': '$$$', 'logo': None, 'created': '2023-11-01T18:59:50', 'updated': '2023-11-01T18:59:50', 'deleted': None}]
     assert response.status_code == 200
-    assert comfort_rest_list == response.json()
+    assert french_rest_list == response.json()
 
-def test_loadRestaurantsComfort():
-    response = client.get("/loadRestaurants/Comfort")
-    comfort_rest_list = [{'id': 47, 'name': 'Pizza Hut', 'category': 'Comfort', 'price': '$', 'logo': None, 'created': '2023-11-01T18:59:48.090000', 'updated': '2023-11-01T18:59:48.090000', 'deleted': None}, {'id': 48, 'name': 'Lonestar', 'category': 'Comfort', 'price': '$$', 'logo': None, 'created': '2023-11-01T18:59:48.220000', 'updated': '2023-11-01T18:59:48.220000', 'deleted': None}, {'id': 49, 'name': 'Osmows', 'category': 'Comfort', 'price': '$$$', 'logo': None, 'created': '2023-11-01T18:59:48.360000', 'updated': '2023-11-01T18:59:48.360000', 'deleted': None}]
+def test_loadRestaurantsVegetarian():
+    response = client.get("/loadRestaurants/Vegetarian")
+    veg_rest_list = [{'id': 62, 'name': 'Freshii', 'category': 'Vegetarian', 'price': '$', 'logo': None, 'created': '2023-11-01T18:59:50.127000', 'updated': '2023-11-01T18:59:50.127000', 'deleted': None}, {'id': 63, 'name': 'Atomica', 'category': 'Vegetarian', 'price': '$$', 'logo': None, 'created': '2023-11-01T18:59:50.270000', 'updated': '2023-11-01T18:59:50.270000', 'deleted': None}, {'id': 64, 'name': 'Copper Branch', 'category': 'Vegetarian', 'price': '$$$', 'logo': None, 'created': '2023-11-01T18:59:50.413000', 'updated': '2023-11-01T18:59:50.413000', 'deleted': None}]
     assert response.status_code == 200
-    assert comfort_rest_list == response.json()
+    assert veg_rest_list == response.json()
     
 def test_loadRestaurantsChinese():
     response = client.get("/loadRestaurants/Chinese")
     chinese_rest_list = [{'id': 50, 'name': 'Mandarin', 'category': 'Chinese', 'price': '$', 'logo': None, 'created': '2023-11-01 18:59:48.493', 'updated': '2023-11-01 18:59:48.493', 'deleted': None}, 
-                   {'id': 51, 'name': 'VIP Chinese Restaurant', 'category': 'Chinese', 'price': '$$', 'logo': None, 'created': '2023-11-01 18:59:48.623', 'updated': '2023-11-01 18:59:48.623', 'deleted': None}, 
-                   {'id': 52, 'name': 'Yellow River', 'category': 'Chinese', 'price': '$$$', 'logo': None, 'created': '2023-11-01 18:59:48.773', 'updated': '2023-11-01 18:59:48.773', 'deleted': None}]
+                         {'id': 51, 'name': 'VIP Chinese Restaurant', 'category': 'Chinese', 'price': '$$', 'logo': None, 'created': '2023-11-01 18:59:48.623', 'updated': '2023-11-01 18:59:48.623', 'deleted': None}, 
+                         {'id': 52, 'name': 'Yellow River', 'category': 'Chinese', 'price': '$$$', 'logo': None, 'created': '2023-11-01 18:59:48.773', 'updated': '2023-11-01 18:59:48.773', 'deleted': None}]
     assert response.status_code == 200
     assert chinese_rest_list == response.json()
     
 def test_loadRestaurantsFastFood():
     response = client.get("/loadRestaurants/Fast Food")
-    fastFood_rest_list = [{'id': 50, 'name': 'Mandarin', 'category': 'Chinese', 'price': '$', 'logo': None, 'created': '2023-11-01 18:59:48.493', 'updated': '2023-11-01 18:59:48.493', 'deleted': None}, 
-                   {'id': 51, 'name': 'VIP Chinese Restaurant', 'category': 'Chinese', 'price': '$$', 'logo': None, 'created': '2023-11-01 18:59:48.623', 'updated': '2023-11-01 18:59:48.623', 'deleted': None}, 
-                   {'id': 52, 'name': 'Yellow River', 'category': 'Chinese', 'price': '$$$', 'logo': None, 'created': '2023-11-01 18:59:48.773', 'updated': '2023-11-01 18:59:48.773', 'deleted': None}]
+    fastFood_rest_list = [{'id': 44, 'name': 'McDonald\'s', 'category': 'Fast Food', 'price': '$', 'logo': None, 'created': '2023-11-01 18:59:47.673', 'updated': '2023-11-01 18:59:47.673', 'deleted': None}, 
+                          {'id': 45, 'name': 'Five Guys', 'category': 'Fast Food', 'price': '$$', 'logo': None, 'created': '2023-11-01 18:59:47.803', 'updated': '2023-11-01 18:59:47.803', 'deleted': None}, 
+                          {'id': 46, 'name': 'Chipotle', 'category': 'Fast Food', 'price': '$$$', 'logo': None, 'created': '2023-11-01 18:59:47.933', 'updated': '2023-11-01 18:59:47.933', 'deleted': None}]
     assert response.status_code == 200
     assert fastFood_rest_list == response.json()
 
 def test_loadRestaurantsItalian():
     response = client.get("/loadRestaurants/Italian")
-    italian_rest_list = [{'id': 50, 'name': 'Mandarin', 'category': 'Chinese', 'price': '$', 'logo': None, 'created': '2023-11-01 18:59:48.493', 'updated': '2023-11-01 18:59:48.493', 'deleted': None}, 
-                   {'id': 51, 'name': 'VIP Chinese Restaurant', 'category': 'Chinese', 'price': '$$', 'logo': None, 'created': '2023-11-01 18:59:48.623', 'updated': '2023-11-01 18:59:48.623', 'deleted': None}, 
-                   {'id': 52, 'name': 'Yellow River', 'category': 'Chinese', 'price': '$$$', 'logo': None, 'created': '2023-11-01 18:59:48.773', 'updated': '2023-11-01 18:59:48.773', 'deleted': None}]
+    italian_rest_list = [{'id': 56, 'name': 'GO', 'category': 'Italian', 'price': '$', 'logo': None, 'created': '2023-11-01 18:59:49.303', 'updated': '2023-11-01 18:59:49.303', 'deleted': None}, 
+                         {'id': 57, 'name': 'Olivea', 'category': 'Italian', 'price': '$$', 'logo': None, 'created': '2023-11-01 18:59:49.450', 'updated': '2023-11-01 18:59:49.450', 'deleted': None}, 
+                         {'id': 58, 'name': 'Casa Domenico', 'category': 'Italian', 'price': '$$$', 'logo': None, 'created': '2023-11-01 18:59:49.593', 'updated': '2023-11-01 18:59:49.593', 'deleted': None}]
     assert response.status_code == 200
     assert italian_rest_list == response.json()
 
-#####################################################################
-# Add to Cart | Data-Centric Partitioning | (Unit Testing)
-#####################################################################    
-def test_add_to_empty_cart():
-    response = client.get("/addToCart/2/62/150")
+###################################################################
+#USER REGISTRATION TESTING (Unit Testing)                                  
+###################################################################
+
+# Partition 1: Valid inputs that meet the criteria for credentials
+def test_registration_clean(): #register with new email, username, and password (Parameters: email = anotherneew@email.com, username = neweUser, password=12345678longPassword)
+    response = client.get("/register/anotherneew@email.com/neweUser/12345678longPassword")
     assert response.status_code == 200
-    
-    
-def test_add_to_1_item_cart():
-    response = client.get("/addToCart/2/62/151")
+    assert response.json() == {'success': 'true'} 
+
+# Partition 2: Credentials for an existing account (ie. no sharing username or email with other accounts)
+def test_registration_already_exists(): #register with existing username, email, password (Parameters: email = admin@email.com, username = admin, password=12345678longPassword)
+    response = client.get("/register/admin@email.com/admin/12345678longPassword")
     assert response.status_code == 200
-    
+    assert response.json() == {'success': 'false', 'reason': 'Account with same username or email already exists'} 
+
+# Partition 3: Password too short
+def test_registration_too_short(): #register with password less than 8 characters (Parameters: email = anotherneew@email.com, username = neweUser, password=3)
+    response = client.get("/register/anotherneew@email.com/neweUser/3")
+    assert response.status_code == 200
+    assert response.json() == {'success': 'false', 'reason': 'Password must be at least 8 characters long.'} 
