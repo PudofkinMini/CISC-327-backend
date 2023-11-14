@@ -110,7 +110,7 @@ def test_placeOrderDNE(): #SQL Server side failure
 '''
 Parameters : user_id = 2
 '''
-def test1_loadOrders(user_id): 
+def test1_loadOrders(): 
     response = client.get("/loadOrders/2")
     assert response.status_code == 200
     assert response.json() == {"status": "success"}
@@ -145,19 +145,19 @@ def test_loadRestaurantsVegetarian():
     
 def test_loadRestaurantsChinese():
     response = client.get("/loadRestaurants/Chinese")
-    chinese_rest_list = [{'id': 50, 'name': 'Mandarin', 'category': 'Chinese', 'price': '$', 'logo': None, 'created': '2023-11-01 18:59:48.493', 'updated': '2023-11-01 18:59:48.493', 'deleted': None}, {'id': 51, 'name': 'VIP Chinese Restaurant', 'category': 'Chinese', 'price': '$$', 'logo': None, 'created': '2023-11-01 18:59:48.623', 'updated': '2023-11-01 18:59:48.623', 'deleted': None}, {'id': 52, 'name': 'Yellow River', 'category': 'Chinese', 'price': '$$$', 'logo': None, 'created': '2023-11-01 18:59:48.773', 'updated': '2023-11-01 18:59:48.773', 'deleted': None}]
+    chinese_rest_list = [{'id': 50, 'name': 'Mandarin', 'category': 'Chinese', 'price': '$', 'logo': None, 'created': '2023-11-01T18:59:48.493000', 'updated': '2023-11-01T18:59:48.493000', 'deleted': None}, {'id': 51, 'name': 'VIP Chinese Restaurant', 'category': 'Chinese', 'price': '$$', 'logo': None, 'created': '2023-11-01T18:59:48.623000', 'updated': '2023-11-01T18:59:48.623000', 'deleted': None}, {'id': 52, 'name': 'Yellow River', 'category': 'Chinese', 'price': '$$$', 'logo': None, 'created': '2023-11-01T18:59:48.773000', 'updated': '2023-11-01T18:59:48.773000', 'deleted': None}]
     assert response.status_code == 200
     assert chinese_rest_list == response.json()
     
 def test_loadRestaurantsFastFood():
     response = client.get("/loadRestaurants/Fast Food")
-    fastFood_rest_list = [{'id': 44, 'name': 'McDonald\'s', 'category': 'Fast Food', 'price': '$', 'logo': None, 'created': '2023-11-01 18:59:47.673', 'updated': '2023-11-01 18:59:47.673', 'deleted': None}, {'id': 45, 'name': 'Five Guys', 'category': 'Fast Food', 'price': '$$', 'logo': None, 'created': '2023-11-01 18:59:47.803', 'updated': '2023-11-01 18:59:47.803', 'deleted': None}, {'id': 46, 'name': 'Chipotle', 'category': 'Fast Food', 'price': '$$$', 'logo': None, 'created': '2023-11-01 18:59:47.933', 'updated': '2023-11-01 18:59:47.933', 'deleted': None}]
+    fastFood_rest_list = [{'id': 44, 'name': "McDonald's", 'category': 'Fast Food', 'price': '$', 'logo': None, 'created': '2023-11-01T18:59:47.673000', 'updated': '2023-11-01T18:59:47.673000', 'deleted': None}, {'id': 45, 'name': 'Five Guys', 'category': 'Fast Food', 'price': '$$', 'logo': None, 'created': '2023-11-01T18:59:47.803000', 'updated': '2023-11-01T18:59:47.803000', 'deleted': None}, {'id': 46, 'name': 'Chipotle', 'category': 'Fast Food', 'price': '$$$', 'logo': None, 'created': '2023-11-01T18:59:47.933000', 'updated': '2023-11-01T18:59:47.933000', 'deleted': None}]
     assert response.status_code == 200
     assert fastFood_rest_list == response.json()
 
 def test_loadRestaurantsItalian():
     response = client.get("/loadRestaurants/Italian")
-    italian_rest_list = [{'id': 56, 'name': 'GO', 'category': 'Italian', 'price': '$', 'logo': None, 'created': '2023-11-01 18:59:49.303', 'updated': '2023-11-01 18:59:49.303', 'deleted': None}, {'id': 57, 'name': 'Olivea', 'category': 'Italian', 'price': '$$', 'logo': None, 'created': '2023-11-01 18:59:49.450', 'updated': '2023-11-01 18:59:49.450', 'deleted': None}, {'id': 58, 'name': 'Casa Domenico', 'category': 'Italian', 'price': '$$$', 'logo': None, 'created': '2023-11-01 18:59:49.593', 'updated': '2023-11-01 18:59:49.593', 'deleted': None}]
+    italian_rest_list = [{'id': 56, 'name': 'GO', 'category': 'Italian', 'price': '$', 'logo': None, 'created': '2023-11-01T18:59:49.303000', 'updated': '2023-11-01T18:59:49.303000', 'deleted': None}, {'id': 57, 'name': 'Olivea', 'category': 'Italian', 'price': '$$', 'logo': None, 'created': '2023-11-01T18:59:49.450000', 'updated': '2023-11-01T18:59:49.450000', 'deleted': None}, {'id': 58, 'name': 'Casa Domenico', 'category': 'Italian', 'price': '$$$', 'logo': None, 'created': '2023-11-01T18:59:49.593000', 'updated': '2023-11-01T18:59:49.593000', 'deleted': None}]
     assert response.status_code == 200
     assert italian_rest_list == response.json()
 
