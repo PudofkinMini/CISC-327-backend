@@ -113,7 +113,7 @@ Parameters : user_id = 2
 def test1_loadOrders(): 
     response = client.get("/loadOrders/2")
     assert response.status_code == 200
-    assert response.json() == {"status": "success"}
+    assert len(response.json()) == 10
 
 #####################################################################
 # EXHAUSTIVE TESTING FOR LOAD RESTAURANTS (Unit Testing)
@@ -166,8 +166,8 @@ def test_loadRestaurantsItalian():
 ###################################################################
 
 # Partition 1: Valid inputs that meet the criteria for credentials
-def test_registration_clean(): #register with new email, username, and password (Parameters: email = anotherneew@email.com, username = neweUser, password=12345678longPassword)
-    response = client.get("/register/anotherneew@email.com/neweUser/12345678longPassword")
+def test_registration_clean(): #register with new email, username, and password (Parameters: email = brandNewEmail2@gmail.com, username = IAmFoodie2, password=SafePassword2)
+    response = client.get("/register/brandNewEmail2@gmail.com/IAmFoodie2/SafePassword2")
     assert response.status_code == 200
     assert response.json() == {'success': 'true'} 
 
