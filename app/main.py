@@ -105,7 +105,7 @@ def load_restaurants(user_id, restaurant_id, menu_item_id):
     cnxn.commit()
     columns = [column[0] for column in cursor.description]
     results = [dict(zip(columns, row)) for row in query]
-    print(results)
+    print('this is the data: ' + results)
     cursor.close()
     return results
 
@@ -140,7 +140,10 @@ def load_cart(ordered_item_id):
 def load_cart(user_id, restaurant_id, order_id):
     cursor = cnxn.cursor()
     cursor.execute(f"exec pui_pay_and_place_order @account_id={user_id}, @restaurant_id={restaurant_id}, @order_id={order_id}")
+    if cursor.rowcount == 0:
+        return {'status': 'unsuccessful'}
     cnxn.commit()
+    
     # columns = [column[0] for column in cursor.description]
     # results = [dict(zip(columns, row)) for row in query]
     # print(results)
