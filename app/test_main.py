@@ -1,5 +1,13 @@
+''' HEADER FOR FILE
+
+THIS IS THE TESTING SUITE FOR THE BACKEND OF OUR APPLICATION
+IT TESTS ALL MAJOR STATE-CHANGING FUNCTIONALITY WITHIN THE APPLICATION
+WE ARE USING TESTCLIENT FROM FASTAPI LIBRARY TO CONDUCT TEST API REQUESTS
+WE ARE USING PYTEST TO DISPLAY AND ASSERT OUR TEST CASES
+'''
+
+
 #https://fastapi.tiangolo.com/tutorial/testing/
-#I used "pytest -r test_main.py >>firstoutput.txt" to run the quick output and print to file.
 #pytest -r test_main.py -vv
 #https://docs.pytest.org/en/6.2.x/usage.html Here is a list of available flags
 from fastapi.testclient import TestClient

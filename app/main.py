@@ -1,11 +1,9 @@
-'''
-TODO:
-    Login - in progress
-    Create account - not started
-    load restaurants - not started
-    add/remove ordered_items - not started
-    place order - not started
-    view profile - not started
+''' HEADER FOR FILE
+
+THIS IS THE API (BACKEND) THAT FACILITATES COMMUNICATION WITH THE SQL SERVER
+WE ARE USING FASTAPI FOR THE WEBSERVER COMPONENT
+WE ARE USING PYODBC FOR THE DATABASE ABSTRACTION LAYER (IE. EXECUTING STATEMENTS ON THE DB)
+THE DATABASE IS CONNECTED BY SUPPLYING A CONNECTION STRING TO THE PYODBC DATABASE DRIVER (see line 21)
 '''
 
 from typing import Union
