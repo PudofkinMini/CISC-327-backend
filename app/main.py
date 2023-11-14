@@ -150,8 +150,9 @@ def load_cart(user_id, restaurant_id, order_id):
 
 @app.get("/loadOrders/{user_id}")
 def load_orders(user_id):
+    print(user_id)
     cursor = cnxn.cursor()
-    query = cursor.execute(f"exec ps_loadOrders @account_id={user_id}")
+    query = cursor.execute(f"exec ps_loadOrders @account_id={user_id}").fetchall()
     columns = [column[0] for column in cursor.description]
     results = [dict(zip(columns, row)) for row in query]
     print(results)
@@ -161,7 +162,7 @@ def load_orders(user_id):
 @app.get("/confirmDelivery/{user_id}/{order_id}")
 def load_orders(user_id, order_id):
     cursor = cnxn.cursor()
-    cursor.execute(f"exec pui_confirm_order_delivery @account_id={user_id} @order_id='{order_id}")
+    cursor.execute(f"exec pui_confirm_order_delivery @account_id={user_id}, @order_id={order_id}")
     cnxn.commit()
     # columns = [column[0] for column in cursor.description]
     # results = [dict(zip(columns, row)) for row in query]
