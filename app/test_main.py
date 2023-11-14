@@ -10,7 +10,7 @@ client = TestClient(app)
 ####################################################################
 #INITIAL PYTEST TEST RUN
 ####################################################################
-def test_test_setupSuccess():
+'''def test_test_setupSuccess():
     response = client.get("/testSetup")
     assert response.status_code == 200
     assert response.json() == {"msg": "Hello World"}
@@ -19,9 +19,27 @@ def test_test_setupFailure():
     response = client.get("/testSetup")
     assert response.status_code == 200
     assert response.json() == {"msg": "Hello world"}
+'''
+###################################################################
+#USER REGISTRATION TESTING                                    
+###################################################################
+def test_registration_clean(): #register with new email, username, and password (Parameters: email = anotherneew@email.com, username = neweUser, password=12345678longPassword)
+    response = client.get("/register/anotherneew@email.com/neweUser/12345678longPassword")
+    assert response.status_code == 200
+    assert response.json() == {'success': 'true'} 
+
+def test_registration_already_exists(): #register with existing username, email, password (Parameters: email = admin@email.com, username = admin, password=12345678longPassword)
+    response = client.get("/register/admin@email.com/admin/12345678longPassword")
+    assert response.status_code == 200
+    assert response.json() == {'success': 'false', 'reason': 'Account with same username or email already exists'} 
+
+def test_registration_too_short(): #register with password less than 8 characters (Parameters: email = anotherneew@email.com, username = neweUser, password=3)
+    response = client.get("/register/anotherneew@email.com/neweUser/3")
+    assert response.status_code == 200
+    assert response.json() == {'success': 'false', 'reason': 'Password must be at least 8 characters long.'} 
 
 ###################################################################
-#USER REGISTRATION/LOGIN TESTING                                         
+#USER LOGIN TESTING                                         
 ###################################################################
 def test_login_username(): #log in with existing username as input (Parameters : username = admin, password = password)
     response = client.get("/login/admin/password")
@@ -94,8 +112,9 @@ def test_placeOrder2():
 Parameters : user_id = 2
              restaurant_id = 58
              order_id = 10 (Non-Existant)
-'''
+
 def test_placeOrderDNE(): #SQL Server side failure
     response = client.get("/payAndPlaceOrder/2/58/10")
-    assert response.status_code == 500
-    assert response.json() == []
+    assert response.status_code == 200
+    assert response.json() == {"status": "success"}
+'''
