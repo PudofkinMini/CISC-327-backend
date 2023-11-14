@@ -68,7 +68,7 @@ def test_loadMenuDNE():
     assert len(parseMenu) == 0 #Should be an empty json body
 
 #####################################################################
-# P   placeOrder TESTING
+# P   placeOrder TESTING (Combined with make payments--handled simultaneously)
 #####################################################################
 '''
 Parameters : user_id = 2
