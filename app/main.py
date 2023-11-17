@@ -81,11 +81,26 @@ def load_menu(restaurantid):
     return results
 
 #testable 
-@app.get("/loadRestaurants/{category}")
+@app.get("/loadRestaurants/{category}") #-- *********ORIGINAL LOADRESTAURANTS************
 def load_restaurants(category):
     cursor = cnxn.cursor()
     cat = category
     if category == 'Fast%20Food':
+        cat = 'Fast Food'
+    print(f"exec ps_load_restaurants @category='{cat}'")
+    query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    cursor.close()
+    return results
+    # return {"restaurants": }
+
+
+@app.get("/mutatedLoadRestaurants/{category}") #****************DECISION MUTATED LOADRESTAURANTS*******************
+def load_restaurants_(category):
+    cursor = cnxn.cursor()
+    cat = category
+    if category != 'Fast%20Food': # == CHANGED TO !=
         cat = 'Fast Food'
     print(f"exec ps_load_restaurants @category='{cat}'")
     query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()

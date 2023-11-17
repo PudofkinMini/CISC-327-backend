@@ -104,12 +104,12 @@ def test_placeOrder2():
 Parameters : user_id = 2
              restaurant_id = 58
              order_id = 10 (Non-Existant)
-
-def test_placeOrderDNE(): #SQL Server side failure
+'''
+def test_placeOrderDNE(): 
     response = client.get("/payAndPlaceOrder/2/58/10")
     assert response.status_code == 200
-    assert response.json() == {"status": "success"}
-'''
+    assert response.json() == {"status": "unsuccessful"}
+
 
 #####################################################################
 # P   loadOrders TESTING 
@@ -189,4 +189,4 @@ def test_registration_already_exists(): #register with existing username, email,
 def test_registration_too_short(): #register with password less than 8 characters (Parameters: email = anotherneew@email.com, username = neweUser, password=3)
     response = client.get("/register/anotherneew@email.com/neweUser/3")
     assert response.status_code == 200
-    assert response.json() == {'success': 'false', 'reason': 'Password must be at least 8 characters long.'} 
+    assert response.json() == {'success': 'false', 'reason': 'Password must be at least 8 characters long.'}
