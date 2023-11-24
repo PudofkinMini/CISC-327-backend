@@ -59,6 +59,7 @@ def register(email, username, password):
 # testable
 @app.get("/login/{username}/{password}")
 def login(username, password):
+    print("we got to login")
     cursor = cnxn.cursor()
     query = cursor.execute(f"exec ps_login @username='{username}', @password='{password}'").fetchone()
     print(query)
@@ -83,6 +84,7 @@ def load_menu(restaurantid):
 #testable 
 @app.get("/loadRestaurants/{category}") #-- *********ORIGINAL LOADRESTAURANTS************
 def load_restaurants(category):
+    print("test")
     cursor = cnxn.cursor()
     cat = category
     if category == 'Fast%20Food':
@@ -93,22 +95,104 @@ def load_restaurants(category):
     results = [dict(zip(columns, row)) for row in query]
     cursor.close()
     return results
-    # return {"restaurants": }
 
 
-@app.get("/mutatedLoadRestaurants/{category}") #****************DECISION MUTATED LOADRESTAURANTS*******************
-def load_restaurants_(category):
-    cursor = cnxn.cursor()
+@app.get("/mutatedLoadRestaurants1/{category}") #****************STATEMENT MUTATED LOADRESTAURANTS*******************
+def load_restaurants_m1(category):
+    # cursor = cnxn.cursor() <- line deleted
     cat = category
-    if category != 'Fast%20Food': # == CHANGED TO !=
+    if category == 'Fast%20Food':
         cat = 'Fast Food'
-    print(f"exec ps_load_restaurants @category='{cat}'")
     query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()
     columns = [column[0] for column in cursor.description]
     results = [dict(zip(columns, row)) for row in query]
     cursor.close()
     return results
-    # return {"restaurants": }
+
+@app.get("/mutatedLoadRestaurants2/{category}") #****************STATEMENT MUTATED LOADRESTAURANTS*******************
+def load_restaurants_m2(category):
+    cursor = cnxn.cursor() 
+    # cat = category <- line deleted
+    if category == 'Fast%20Food':
+        cat = 'Fast Food'
+    query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    cursor.close()
+    return results
+    
+@app.get("/mutatedLoadRestaurants3/{category}") #****************STATEMENT MUTATED LOADRESTAURANTS*******************
+def load_restaurants_m3(category):
+    cursor = cnxn.cursor()
+    cat = category
+    # if category == 'Fast%20Food': <- lines deleted
+    #     cat = 'Fast Food'
+    print(cat)
+    query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    cursor.close()
+    return results
+
+@app.get("/mutatedLoadRestaurants4/{category}") #****************STATEMENT MUTATED LOADRESTAURANTS*******************
+def load_restaurants_m4(category):
+    cursor = cnxn.cursor()
+    cat = category
+    if category == 'Fast%20Food':
+        cat = 'Fast Food'
+    # query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall() <- line deleted
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    cursor.close()
+    return results
+
+@app.get("/mutatedLoadRestaurants5/{category}") #****************STATEMENT MUTATED LOADRESTAURANTS*******************
+def load_restaurants_m5(category):
+    cursor = cnxn.cursor() 
+    cat = category
+    if category == 'Fast%20Food':
+        cat = 'Fast Food'
+    query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()
+    # columns = [column[0] for column in cursor.description] <- line deleted
+    results = [dict(zip(columns, row)) for row in query] 
+    cursor.close()
+    return results
+
+@app.get("/mutatedLoadRestaurants6/{category}") #****************STATEMENT MUTATED LOADRESTAURANTS*******************
+def load_restaurants_m6(category):
+    cursor = cnxn.cursor()
+    cat = category
+    if category == 'Fast%20Food':
+        cat = 'Fast Food'
+    query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()
+    columns = [column[0] for column in cursor.description]
+    # results = [dict(zip(columns, row)) for row in query] <- line deleted
+    cursor.close()
+    return results
+
+@app.get("/mutatedLoadRestaurants7/{category}") #****************STATEMENT MUTATED LOADRESTAURANTS*******************
+def load_restaurants_m7(category):
+    cursor = cnxn.cursor() 
+    cat = category
+    if category == 'Fast%20Food':
+        cat = 'Fast Food'
+    query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    # cursor.close() <- line deleted
+    return results
+    
+@app.get("/mutatedLoadRestaurants8/{category}") #****************STATEMENT MUTATED LOADRESTAURANTS*******************
+def load_restaurants_m8(category):
+    cursor = cnxn.cursor() 
+    cat = category
+    if category == 'Fast%20Food':
+        cat = 'Fast Food'
+    query = cursor.execute(f"exec ps_load_restaurants @category='{cat}'").fetchall()
+    columns = [column[0] for column in cursor.description]
+    results = [dict(zip(columns, row)) for row in query]
+    cursor.close()
+    # return results <- line deleted
 
 # testable - unit testing
 @app.get("/addToCart/{user_id}/{restaurant_id}/{menu_item_id}")
@@ -118,7 +202,6 @@ def load_restaurants(user_id, restaurant_id, menu_item_id):
     cnxn.commit()
     columns = [column[0] for column in cursor.description]
     results = [dict(zip(columns, row)) for row in query]
-    print('this is the data: ' + results)
     cursor.close()
     return results
 
