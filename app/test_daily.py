@@ -8,7 +8,7 @@ WE ARE USING PYTEST TO DISPLAY AND ASSERT OUR TEST CASES
 
 
 #https://fastapi.tiangolo.com/tutorial/testing/
-#pytest -r test_main.py -vv
+#pytest app/test_daily.py
 #https://docs.pytest.org/en/6.2.x/usage.html Here is a list of available flags
 from fastapi.testclient import TestClient
 from unittest import TestCase
@@ -191,9 +191,7 @@ def test_registration_too_short(): #register with password less than 8 character
     assert response.status_code == 200
     assert response.json() == {'success': 'false', 'reason': 'Password must be at least 8 characters long.'}
 
-###################################################################
-#USER REGISTRATION TESTING (Unit Testing)                                  
-###################################################################
+
 ###################################################################
 #WHITEBOX STATEMENT COVERAGE TESTING FOR payAndPlaceOrder                        
 ###################################################################
