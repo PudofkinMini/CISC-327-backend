@@ -57,6 +57,23 @@ def register(email, username, password):
     return {'success': 'true'}
 
 # testable
+@app.get("/registerTEST/{email}/{username}/{password}")
+def registerTEST(email, username, password):
+    if len(password) < 8:
+        return {'success': 'false', 'reason': 'Password must be at least 8 characters long.'}
+    cursor = cnxn.cursor()
+    existing_accounts = cursor.execute(f"select * from accounts where username like '{username}' or email like '{email}'").fetchall()
+    # print(existing_accounts)
+    if len(existing_accounts) > 0:
+        print("acc alr exists")
+        return {'success': 'false', 'reason': 'Account with same username or email already exists'}
+    query = cursor.execute(f"exec pi_create_account @email='{email}', @username='{username}', @password='{password}'")
+    # cnxn.commit()
+    print(query)
+    cursor.close()
+    return {'success': 'true'}
+
+# testable
 @app.get("/login/{username}/{password}")
 def login(username, password):
     print("we got to login")
