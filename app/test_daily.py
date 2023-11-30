@@ -175,19 +175,19 @@ def test_loadRestaurantsItalian():
 
 # Partition 1: Valid inputs that meet the criteria for credentials
 def test_registration_clean(): #register with new email, username, and password (Parameters: email = brandNewEmail2@gmail.com, username = IAmFoodie2, password=SafePassword2)
-    response = dailyTestClient.get("/register/brandNewEmail2@gmail.com/IAmFoodie2/SafePassword2")
+    response = dailyTestClient.get("/registerTEST/brandNewEmail2@gmail.com/IAmFoodie2/SafePassword2")
     assert response.status_code == 200
     assert response.json() == {'success': 'true'} 
 
 # Partition 2: Credentials for an existing account (ie. no sharing username or email with other accounts)
 def test_registration_already_exists(): #register with existing username, email, password (Parameters: email = admin@email.com, username = admin, password=12345678longPassword)
-    response = dailyTestClient.get("/register/admin@email.com/admin/12345678longPassword")
+    response = dailyTestClient.get("/registerTEST/admin@email.com/admin/12345678longPassword")
     assert response.status_code == 200
     assert response.json() == {'success': 'false', 'reason': 'Account with same username or email already exists'} 
 
 # Partition 3: Password too short
 def test_registration_too_short(): #register with password less than 8 characters (Parameters: email = anotherneew@email.com, username = neweUser, password=3)
-    response = dailyTestClient.get("/register/anotherneew@email.com/neweUser/3")
+    response = dailyTestClient.get("/registerTEST/anotherneew@email.com/neweUser/3")
     assert response.status_code == 200
     assert response.json() == {'success': 'false', 'reason': 'Password must be at least 8 characters long.'}
 
